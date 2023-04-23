@@ -2,6 +2,24 @@ import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
+const computeData = (list) => {
+  let listA = [];
+  if (list[0] === undefined) {
+    listA = [list];
+  } else {
+    listA = [...list];
+  }
+
+  const computed = listA.map(({ idlist, listname, user }) => {
+    return { idlist, listname, useremail: user.email };
+  });
+
+  if (computed.length === 1) {
+    return computed[0];
+  } else {
+    return computed;
+  }
+};
 
 export const createOneList = async (req, res) => {
   const { listname, user_iduser } = req.body;
@@ -27,9 +45,7 @@ export const getAllList = async (req, res) => {
       },
     });
     if (lists.length >= 1) {
-      const computedLists = lists.map(({ idlist, listname, user }) => {
-        return { idlist, listname, useremail: user.email };
-      });
+      const computedLists = computeData(lists);
       res.status(200).json(computedLists);
     } else {
       res.status(204).json({ error: true, message: "No Content" });
@@ -39,6 +55,30 @@ export const getAllList = async (req, res) => {
   }
 };
 
-export const getOneList = async (req, res) => {};
+export const getOneList = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const list = await prisma.list.findUnique({
+      where: {
+        idlist: +id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
+    if (Object.keys(list).length >= 1) {
+      const computedlist = computeData(list);
+      res.status(200).json(computedlist);
+    } else {
+      res.status(204).json({ error: true, message: "No Content" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: true });
+  }
+};
 
 export const deleteOneList = async (req, res) => {};
