@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-/* router.get("/", getAllList); */
+router.get("/", getAllList);
 router.post("/", createOneList);
 /* router.get("/:id",getOneList);
 router.delete("/:id",deleteOneList); */
