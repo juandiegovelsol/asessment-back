@@ -11,6 +11,6 @@ const router = express.Router();
 router.get("/", getAllList);
 router.post("/", createOneList);
 router.get("/:id", getOneList);
-/* router.delete("/:id",deleteOneList); */
+router.delete("/:id", deleteOneList);
 
 export default router;

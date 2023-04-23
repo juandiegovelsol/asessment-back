@@ -81,4 +81,17 @@ export const getOneList = async (req, res) => {
   }
 };
 
-export const deleteOneList = async (req, res) => {};
+export const deleteOneList = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const deleted = await prisma.list.delete({
+      where: {
+        idlist: +id,
+      },
+    });
+    res.json(deleted);
+  } catch (error) {
+    res.status(500).json({ error: true });
+  }
+};
