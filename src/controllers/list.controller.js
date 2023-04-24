@@ -10,8 +10,8 @@ const computeData = (list) => {
     listA = [...list];
   }
 
-  const computed = listA.map(({ idlist, listname, user }) => {
-    return { idlist, listname, useremail: user.email };
+  const computed = listA.map(({ idlist, listname, user, favs }) => {
+    return { idlist, listname, useremail: user.email, favs };
   });
 
   if (computed.length === 1) {
@@ -42,6 +42,13 @@ export const getAllList = async (req, res) => {
             email: true,
           },
         },
+        favs: {
+          select: {
+            title: true,
+            description: true,
+            link: true,
+          },
+        },
       },
     });
     if (lists.length >= 1) {
@@ -68,6 +75,13 @@ export const getOneList = async (req, res) => {
             email: true,
           },
         },
+        favs: {
+          select: {
+            title: true,
+            description: true,
+            link: true,
+          },
+        },
       },
     });
     if (Object.keys(list).length >= 1) {
@@ -84,7 +98,6 @@ export const getOneList = async (req, res) => {
 export const deleteOneList = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const deleted = await prisma.list.delete({
       where: {
         idlist: +id,
