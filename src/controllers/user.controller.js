@@ -4,25 +4,14 @@ import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-export const login = async (req, res) => {
-  const { email, password } = req.body;
+export const generateToken = (req, res) => {
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email: email,
-      },
-    });
-    const isValidUser = bcrypt.compareSync(password, user.password);
-    if (isValidUser) {
-      //aqui va el next para la generacion del token
-      res.status(200).json({ message: "loged user" });
-    } else {
-      res
-        .status(401)
-        .json({ error: true, message: "invalid user or password" });
-    }
+    const { email } = req.body;
+    const payload = { email };
+    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
+    res.status(200).json({ ...payload, token });
   } catch (error) {
-    res.status(500).json({ error: true });
+    res.status(500).json({ error: false });
   }
 };
 

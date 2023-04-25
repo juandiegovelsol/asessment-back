@@ -13,7 +13,7 @@ model favs {
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
   list_idlist Int
-  list        list    @relation(fields: [list_idlist], references: [idlist], onDelete: NoAction, onUpdate: NoAction, map: "fk_favs_list1")
+  list        list    @relation(fields: [list_idlist], references: [idlist], onDelete: Cascade, onUpdate: Cascade, map: "fk_favs_list1")
 
   @@index([list_idlist], map: "fk_favs_list1_idx")
 }
@@ -23,7 +23,7 @@ model list {
   listname    String? @db.VarChar(255)
   user_iduser Int
   favs        favs[]
-  user        user    @relation(fields: [user_iduser], references: [iduser], onDelete: NoAction, onUpdate: NoAction, map: "fk_list_user")
+  user        user    @relation(fields: [user_iduser], references: [iduser], onDelete: Cascade, onUpdate: Cascade, map: "fk_list_user")
 
   @@index([user_iduser], map: "fk_list_user_idx")
 }
