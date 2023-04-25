@@ -4,7 +4,18 @@ import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-export const login = async (req, res) => {
+export const generateToken = (req, res) => {
+  try {
+    const { email } = req.body;
+    const payload = { email };
+    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
+    res.status(200).json({ ...payload, token });
+  } catch (error) {
+    res.status(500).json({ error: false });
+  }
+};
+
+export const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await prisma.user.findFirst({
@@ -15,7 +26,7 @@ export const login = async (req, res) => {
     const isValidUser = bcrypt.compareSync(password, user.password);
     if (isValidUser) {
       //aqui va el next para la generacion del token
-      res.status(200).json({ message: "loged user" });
+      next();
     } else {
       res
         .status(401)
