@@ -103,8 +103,10 @@ export const deleteOneList = async (req, res) => {
         idlist: +id,
       },
     });
+
     res.json(deleted);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: true });
   }
 };

@@ -5,12 +5,13 @@ import {
   createOneList,
   deleteOneList,
 } from "../controllers/list.controller.js";
+import { isAuthenticaded } from "../middlewares/isAuthenticaded.middle.js";
 
 const router = express.Router();
 
-router.get("/", getAllList);
-router.post("/", createOneList);
-router.get("/:id", getOneList);
-router.delete("/:id", deleteOneList);
+router.get("/", isAuthenticaded, getAllList);
+router.post("/", isAuthenticaded, createOneList);
+router.get("/:id", isAuthenticaded, getOneList);
+router.delete("/:id", isAuthenticaded, deleteOneList);
 
 export default router;
