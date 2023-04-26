@@ -5,8 +5,6 @@ export const isAuthenticaded = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
     const { exp: expDate } = decoded;
-    /* console.log(expDate);
-    console.log(Date.now() / 1000); */
     if (Date.now() / 1000 < expDate) {
       next();
     } else {

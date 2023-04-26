@@ -13,7 +13,6 @@ export const login = async (req, res, next) => {
     });
     const isValidUser = bcrypt.compareSync(password, user.password);
     if (isValidUser) {
-      //aqui va el next para la generacion del token
       next();
     } else {
       res
