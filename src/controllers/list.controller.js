@@ -1,25 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken";
+import { computeData } from "../functions/computeData.js";
 
 const prisma = new PrismaClient();
-const computeData = (list) => {
-  let listA = [];
-  if (list[0] === undefined) {
-    listA = [list];
-  } else {
-    listA = [...list];
-  }
-
-  const computed = listA.map(({ idlist, listname, user, favs }) => {
-    return { idlist, listname, useremail: user.email, favs };
-  });
-
-  if (computed.length === 1) {
-    return computed[0];
-  } else {
-    return computed;
-  }
-};
 
 export const createOneList = async (req, res) => {
   const { listname, user_iduser } = req.body;
@@ -98,6 +80,7 @@ export const getOneList = async (req, res) => {
 export const deleteOneList = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const deleted = await prisma.list.delete({
       where: {
         idlist: +id,

@@ -16,7 +16,6 @@ export const createOneFav = async (req, res) => {
 export const deleteOneFav = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const deleted = await prisma.favs.delete({
       where: {
         idfavs: +id,
