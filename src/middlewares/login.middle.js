@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const login = async (req, res, next) => {

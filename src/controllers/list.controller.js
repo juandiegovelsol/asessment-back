@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { computeData } from "../functions/computeData.js";
-
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const createOneList = async (req, res) => {
