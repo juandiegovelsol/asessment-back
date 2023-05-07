@@ -10,6 +10,7 @@ export const login = async (req, res, next) => {
         email: email,
       },
     });
+    req.body = { email, password, iduser: user.iduser };
     const isValidUser = bcrypt.compareSync(password, user.password);
     if (isValidUser) {
       next();

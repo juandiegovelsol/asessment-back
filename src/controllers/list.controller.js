@@ -1,4 +1,5 @@
 import { computeData } from "../functions/computeData.js";
+import { computeDataOneList } from "../functions/computeDataOneList.js";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -46,6 +47,40 @@ export const getAllList = async (req, res) => {
 export const getOneList = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("id", id);
+    const userList = await prisma.user.findUnique({
+      where: {
+        iduser: +id,
+      },
+      include: {
+        list: {
+          include: {
+            favs: {
+              select: {
+                idfavs: true,
+                title: true,
+                description: true,
+                link: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (Object.keys(userList).length >= 1) {
+      const computedlist = computeDataOneList(userList);
+      res.status(200).json(computedlist);
+    } else {
+      res.status(204).json({ error: true, message: "No Content" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: true });
+    console.log("error", error);
+  }
+};
+/* export const getOneList = async (req, res) => {
+  try {
+    const { id } = req.params;
     const list = await prisma.list.findUnique({
       where: {
         idlist: +id,
@@ -74,7 +109,7 @@ export const getOneList = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: true });
   }
-};
+}; */
 
 export const deleteOneList = async (req, res) => {
   try {
