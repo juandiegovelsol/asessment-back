@@ -47,7 +47,6 @@ export const getAllList = async (req, res) => {
 export const getOneList = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
     const userList = await prisma.user.findUnique({
       where: {
         iduser: +id,
