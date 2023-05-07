@@ -5,8 +5,9 @@ const prisma = new PrismaClient();
 
 export const generateToken = (req, res) => {
   try {
-    const { email } = req.body;
-    const payload = { email };
+    const { email, iduser } = req.body;
+    const payload = { email, iduser };
+    console.log("iduser", iduser);
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
     res.status(200).json({ ...payload, token });
   } catch (error) {
